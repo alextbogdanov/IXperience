@@ -1,0 +1,8 @@
+.box {
+    width: calc(33.3333% - 8px);
+    height: 200px;
+}
+
+.box.double-width {
+    width: calc(66.6666% - 8px);
+}
