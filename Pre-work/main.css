@@ -1,4 +1,181 @@
 body {
     margin: 0;
     padding: 0;
+    background-color: #f6f6f6;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.container {
+    position: relative;
+    max-width: 1200px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-sizing: border-box;
+    padding: 30px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+
+#header {
+    padding: 30px 80px;
+    background-color: #fff;
+}
+
+#header a:link, #header a:visited {
+    font-family: 'Edu SA Beginner', cursive;
+    font-size: 28px;
+    text-decoration: none;
+    color: #333;
+}
+
+/* ABOUT */
+
+#about-container {
+    margin: 80px auto 0;
+}
+
+.about-section#left {
+    float: left;
+    width: 380px;
+}
+
+.about-section#right {
+    float: right;
+    width: calc(100% - 380px - 50px);
+}
+
+#profile-picture-wrapper {
+    margin: 0 auto;
+    width: 300px;
+    height: 300px;
+    border-radius: 300px;
+    background-image: url('images/profile.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
+
+#about-container h1 {
+    text-align: center;
+    font-size: 24px;
+}
+
+#about-container h1 span {
+    font-family: 'Edu SA Beginner', cursive;
+    font-size: 40px;
+    font-weight: lighter;
+    margin: 0 5px;
+    letter-spacing: 1px;
+}
+
+#about-container p {
+    margin: 40px 0;
+    line-height: 1.8;
+    font-size: 18px;
+}
+
+.button-wrapper {
+    width: 100%;
+    text-align: center;
+}
+
+.button:link, .button:visited {
+    display: inline-block;
+    text-decoration: none;
+    color: #fff;
+    border-radius: 5px;
+    padding: 7.5px 30px;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+}
+
+.button.yellow {
+    border: 1px solid #ffba00;
+    color: #ffba00;
+}
+
+.button.yellow:hover {
+    background-color: #ffba00;
+    color: #fff;
+}
+
+.button.yellow-full {
+    border: 1px solid #ffba00;
+    color: #fff;
+    background-color: #ffba00;
+}
+
+.button.yellow-full:hover {
+    background-color: #fff;
+    color: #ffba00;
+}
+
+/* CONTACT ME */
+
+#contact-container {
+    margin-top: 30px;
+}
+
+#contact-container h2 {
+    text-align: center;
+    font-size: 34px;
+}
+
+#contact-container form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+#contact-container .form-group {
+    display: block;
+    margin: 20px 0;
+}
+
+#contact-container .form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+#contact-container .form-group input, #contact-container .form-group textarea {
+    display: inline-block;
+    width: 600px;
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #aaa;
+    font-size: 18px;
+    font-weight: lighter;
+    margin: 0 auto;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+}
+
+#contact-container .form-group textarea {
+    min-width: 600px;
+    min-height: 150px;
+    resize: vertical;
+}
+
+#contact-container .form-group input[type="checkbox"] {
+    width: auto;
+    display: inline-block;
+}
+
+#contact-container .form-group p {
+    display: inline-block;
+    margin: 0;
+}
+
+#contact-container .form-group .button {
+    width: 40%;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px;
 }
