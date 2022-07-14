@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bootstrap Portfolio</title>
+    <!-- STYLESHEETS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+    <!-- HEADER -->
+    <nav class="navbar navbar-expand-lg bg-light p-4">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Alex' Portfolio</a>
+        </div>
+    </nav>
+    <!-- BIO -->
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="text-center">
+                            <img src="images/profile.jpg" class="rounded" alt="profile picture" style="height: 300px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body p-5">
+                        <h1 class="card-title text-center">Hi, I'm Alexander Bogdanov...</h1>
+                        <p class="card-text mt-4 mb-5">...And I'm a Computer Science major with a minor in Mathematics at the University of Miami. In my free time I like to travel and edit videos.</p>
+                        <div class="d-grid gap-2 col-6 mx-auto">
+                            <a href="https://github.com/alextbogdanov" class="btn btn-warning">Github</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- CONTACT ME -->
+    <div class="container mt-5">
+        <div class="row">
+            <h2 class="card-title text-center">Contact Me</h2>
+            <form>
+                <div class="mb-5">
+                    <label for="name" class="form-label">Full Name:</label>
+                    <input type="text" class="form-control" id="name">
+                <div class="mb-5">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" class="form-control" id="email">
+                </div>
+                <div class="mb-5">
+                    <div class="form-floating">
+                        <textarea class="form-control" placeholder="Leave a comment here" id="message" style="height: 100px;"></textarea>
+                        <label for="floatingTextarea2">Message:</label>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 col-6 mx-auto">
+                    <a href="javascript:void(0)" class="btn btn-warning">Submit</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
