@@ -12,6 +12,12 @@ class UI {
         this.tableBody = document.getElementById('tbody');
 
         this.tasks = [];
+        let storedTasks = JSON.parse(localStorage.getItem('tasks'));
+
+        if(storedTasks != null && storedTasks.length > 0) {
+            this.tasks = storedTasks;
+            this.populateTable();
+        }
     }
 
     bindEventListeners() {
@@ -25,6 +31,7 @@ class UI {
             let newTask = new Task(input);
             this.tasks.push(newTask);
 
+            localStorage.setItem('tasks', JSON.stringify(this.tasks));
             this.populateTable();
 
             this.input.value = "";
@@ -67,6 +74,8 @@ class UI {
 
     completeTask(task) {
         this.tasks.find(t => t.task === task.task).completed = "Complete";
+
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
         this.populateTable();
     }
 
@@ -75,6 +84,7 @@ class UI {
             return t.task !== task.task;
         })
 
+        localStorage.setItem('tasks', JSON.stringify(this.tasks));
         this.populateTable();
     }
 }
