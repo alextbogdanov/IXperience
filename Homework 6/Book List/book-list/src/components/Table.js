@@ -1,7 +1,15 @@
 import React from 'react'
 import TableRow from './TableRow'
 
-export default function Table() {
+export default function Table(props) {
+  function onBookEdit(book) {
+    props.editBook(book);
+  }
+
+  function onBookDelete(book) {
+    props.deleteBook(book);
+  }
+
   return (
     <table className="table mt-5">
         <thead>
@@ -9,11 +17,13 @@ export default function Table() {
                 <th>Title</th>
                 <th>Author</th>
                 <th>ISBN</th>
-                <th></th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <TableRow title="How to Javascript" author="Mr Anonymous" isbn="92187392387409283308" />
+          {props.books.map((book) => {
+            return <TableRow key={book.id} book={book} onBookEdit={onBookEdit} onBookDelete={onBookDelete} />
+          })}
         </tbody>
     </table>
   )
