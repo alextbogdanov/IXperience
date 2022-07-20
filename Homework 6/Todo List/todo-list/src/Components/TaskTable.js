@@ -1,9 +1,9 @@
 import React from 'react'
 import TaskTableRow from './TaskTableRow';
 
-export default function TaskTable() {
+export default function TaskTable(props) {
   return (
-    <table class="table">
+    <table className="table">
         <thead>
             <tr className="border-bottom border-dark">
                 <th>Task</th>
@@ -12,7 +12,9 @@ export default function TaskTable() {
             </tr>
         </thead>
         <tbody>
-            <TaskTableRow />
+          {props.tasks.map((task) => {
+            return <TaskTableRow key={task.id} task={task} completeTask={props.completeTask} deleteTask={props.deleteTask} />
+          })}
         </tbody>
     </table>
   )
