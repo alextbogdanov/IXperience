@@ -1,12 +1,8 @@
 export default class Book {
-    static id = 0;
-
-    constructor(title, author, isbn) {
-        this.id = Book.id;
+    constructor(id, title, author, isbn) {
+        this.id = id;
         this.title = title;
         this.author = author;
         this.isbn = isbn;
-
-        Book.id++;
     }
 }

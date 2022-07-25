@@ -13,7 +13,7 @@ export default function Form(props) {
     event.preventDefault();
 
     if(titleInput.trim() !== '' && authorInput.trim() !== '' && isbnInput.trim() !== '') {
-      const newBook = new Book(titleInput, authorInput, isbnInput);
+      const newBook = new Book(null, titleInput, authorInput, isbnInput);
       props.createBook(newBook);
     }
 
