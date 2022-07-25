@@ -1,11 +1,7 @@
 export default class Task {
-    static id = 0;
-
-    constructor(name, completed) {
-        this.id = Task.id;
+    constructor(id, name, completed) {
+        this.id = id;
         this.name = name;
         this.completed = completed;
-
-        Task.id++;
     }
 }

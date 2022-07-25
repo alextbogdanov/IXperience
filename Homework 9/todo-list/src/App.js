@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
-import Bootstrap from 'bootstrap/dist/css/bootstrap.css';
+import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
 import TaskInput from './Components/TaskInput';
 import TaskTable from './Components/TaskTable';
+
+import taskService from './Services/Task.service.js';
 
 let loadedTasks = JSON.parse(localStorage.getItem('tasks'));
 if(!loadedTasks) {
@@ -11,29 +13,58 @@ if(!loadedTasks) {
 function App() {
   const [tasks, setTasks] = useState(loadedTasks);
 
-  function createTask(task) {
-    let newTasks = [...tasks, task];
+  useEffect(() => {
+    readTasks();
+  }, [])
 
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-    setTasks(newTasks);
+  async function readTasks() {
+    try {
+      const rTasks = await taskService.readTasks();
+
+      setTasks(rTasks);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
-  function completeTask(task) {
-    let newTasks = tasks.map((t) => {
-      return task.id === t.id ? task : t;
-    })
+  async function createTask(task) {
+    try {
+      task = await taskService.createTask(task);
 
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-    setTasks(newTasks);
+      let newTasks = [...tasks, task];
+      setTasks(newTasks);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
-  function deleteTask(task) {
-    let newTasks = tasks.filter((t) => {
-      return task.id !== t.id;
-    })
+  async function completeTask(task) {
+    try {
+      task = await taskService.updateTask(task);
 
-    localStorage.setItem('tasks', JSON.stringify(newTasks));
-    setTasks(newTasks);
+      let newTasks = tasks.map((t) => {
+        return task.id === t.id ? task : t;
+      })
+
+      setTasks(newTasks);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteTask(task) {
+    try {
+      await taskService.deleteTask(task);
+
+      let newTasks = tasks.filter((t) => {
+        return task.id !== t.id;
+      })
+
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+      setTasks(newTasks);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   return (

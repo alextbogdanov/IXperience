@@ -8,7 +8,7 @@ export default function TaskInput(props) {
         event.preventDefault();
 
         if(taskInput.trim() !== '') {
-            let newTask = new Task(taskInput, false);
+            let newTask = new Task(null, taskInput, false);
             props.createTask(newTask);
             setTaskInput('');
         }
