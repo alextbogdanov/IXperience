@@ -1,20 +1,22 @@
-import React from 'react'
+import React from 'react';
 
-export default function RecipeCard() {
+export default function RecipeCard({
+    recipe,
+    deleteRecipe
+}) {
   return (
     <div className="card">
         <div className="card-body">
-            <h3 className="card-title">Example recipe</h3>
-            <p className="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <h3 className="card-title">{recipe.name}</h3>
+            <p className="card-text">{recipe.instructions}</p>
         </div>
         <ul className="list-group list-group-flush">
-            <li className="list-group-item">An item</li>
-            <li className="list-group-item">A second item</li>
-            <li className="list-group-item">A third item</li>
+            {recipe.ingredients.map((ingredient) => {
+                return <li key={ingredient.id} className="list-group-item">{ingredient.name} | {ingredient.amount}</li>
+            })}
         </ul>
-        <div class="card-body">
-            <button className="btn btn-info">Edit</button>
-            <button className="btn btn-danger ms-2">Delete</button>
+        <div className="card-body">
+            <button className="btn btn-danger" onClick={() => deleteRecipe(recipe)}>Delete</button>
         </div>
     </div>
   )
