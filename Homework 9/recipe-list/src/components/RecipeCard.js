@@ -5,7 +5,7 @@ export default function RecipeCard({
     deleteRecipe
 }) {
   return (
-    <div className="card">
+    <div className="card mb-4">
         <div className="card-body">
             <h3 className="card-title">{recipe.name}</h3>
             <p className="card-text">{recipe.instructions}</p>

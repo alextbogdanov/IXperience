@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import IngredientInput from './IngredientInput';
-import RecipeCard from './RecipeCard';
 import Recipe from '../models/Recipe';
 import Ingredient from '../models/Ingredient';
 
@@ -15,7 +14,7 @@ export default function Form({
         e.preventDefault();
 
         if(nameInput.trim() !== '' && instructionsInput.trim() !== '' && ingredients.length > 0) {
-            let newRecipe = new Recipe(nameInput, ingredients, instructionsInput);
+            let newRecipe = new Recipe(null, nameInput, ingredients, instructionsInput);
             createRecipe(newRecipe);
 
             setNameInput('');

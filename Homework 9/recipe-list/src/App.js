@@ -1,22 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import "bootstrap/dist/css/bootstrap.css";
 import Form from "./components/Form";
 import RecipeCard from "./components/RecipeCard";
+import recipeService from './services/recipe.service';
 
 function App() {
   const [recipes, setRecipes] = useState([]);
+
+  useEffect(() => {
+    readRecipes();
+  }, [])
+
+  async function readRecipes() {
+    try {
+      let initRecipes = await recipeService.readRecipes();
+
+      setRecipes(initRecipes);
+    } catch(err) {
+      console.log(err);
+    }
+  }
   
-  function createRecipe(recipe) {
-    const newRecipes = [...recipes, recipe];
-    setRecipes(newRecipes);
+  async function createRecipe(recipe) {
+    try {
+      recipe = await recipeService.addRecipe(recipe);
+
+      const newRecipes = [...recipes, recipe];
+      setRecipes(newRecipes);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
-  function deleteRecipe(recipe) {
-    const newRecipes = recipes.filter((r) => {
-      return recipe.id !== r.id;
-    })
+  async function deleteRecipe(recipe) {
+    try {
+      await recipeService.deleteRecipe(recipe);
 
-    setRecipes(newRecipes);
+      const newRecipes = recipes.filter((r) => {
+        return recipe.id !== r.id;
+      });
+
+      setRecipes(newRecipes);
+    } catch(err) {
+      console.log(err);
+    }
   }
 
   return (
