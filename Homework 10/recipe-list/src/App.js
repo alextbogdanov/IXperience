@@ -1,65 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import "bootstrap/dist/css/bootstrap.css";
-import Form from "./components/Form";
-import RecipeCard from "./components/RecipeCard";
-import recipeService from './services/recipe.service';
+import React from 'react';
+import 'bootstrap/dist/css/bootstrap.css';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import RecipesPage from './pages/RecipesPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
+import Navbar from './components/Navbar';
 
 function App() {
-  const [recipes, setRecipes] = useState([]);
-
-  useEffect(() => {
-    readRecipes();
-  }, [])
-
-  async function readRecipes() {
-    try {
-      let initRecipes = await recipeService.readRecipes();
-
-      setRecipes(initRecipes);
-    } catch(err) {
-      console.log(err);
-    }
-  }
-  
-  async function createRecipe(recipe) {
-    try {
-      recipe = await recipeService.addRecipe(recipe);
-
-      const newRecipes = [...recipes, recipe];
-      setRecipes(newRecipes);
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
-  async function deleteRecipe(recipe) {
-    try {
-      await recipeService.deleteRecipe(recipe);
-
-      const newRecipes = recipes.filter((r) => {
-        return recipe.id !== r.id;
-      });
-
-      setRecipes(newRecipes);
-    } catch(err) {
-      console.log(err);
-    }
-  }
-
   return (
-    <div className="container mt-5 mb-5">
-      <div className="card p-5">
-        <h1>Recipe List</h1>
-        <hr />
-        <Form createRecipe={createRecipe} />
-        <hr className="mb-5" />
-        <div>
-          {recipes.map((r) => {
-            return <RecipeCard key={r.id} recipe={r} deleteRecipe={deleteRecipe} />
-          })}
-        </div>
-      </div>
-    </div>
+    <BrowserRouter>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<RecipesPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
