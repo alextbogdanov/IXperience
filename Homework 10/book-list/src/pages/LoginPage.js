@@ -1,15 +1,45 @@
-export default function LoginPage() {
+import React, { useState, useEffect } from 'react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
+
+import { auth } from '../firebase/firebase';
+
+export default function LoginPage({ user }) {
+  const [emailInput, setEmailInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if(user != null) {
+      navigate('/');
+    }
+  });
+
+  async function onLogin(event) {
+    event.preventDefault();
+
+    try {
+      await signInWithEmailAndPassword(auth, emailInput, passwordInput);
+      navigate('/');
+    } catch(err) {
+      console.log(err);
+    }
+  }
+  
   return (
     <div className='container mt-5'>
       <div className='card p-5'>
         <h1>Login</h1>
         <hr className="mb-5" />
-        <form>
+        <form onSubmit={onLogin}>
           <div className="mb-3">
             <label className="form-label">Email address</label>
             <input
               type="email"
               className="form-control"
+              value={emailInput}
+              onChange={(e) => setEmailInput(e.target.value)}
               />
           </div>
           <div className="mb-3">
@@ -17,6 +47,8 @@ export default function LoginPage() {
             <input
               type="password"
               className="form-control"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
             />
           </div>
           <div className='d-grid'>

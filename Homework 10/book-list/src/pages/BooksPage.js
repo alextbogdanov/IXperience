@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Form from '../components/Form';
 import Table from '../components/Table';
 
 import bookService from '../services/book.service';
 
-export default function BooksPage() {
+export default function BooksPage({ user }) {
     const [books, setBooks] = useState([]);
 
+    const navigate = useNavigate();
+
     useEffect(() => {
-      getBooks();
+      if(user != null) {
+        getBooks();
+      } else {
+        navigate('/login');
+      }
     }, [])
   
     async function getBooks() {
