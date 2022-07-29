@@ -1,34 +1,60 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { onAuthStateChanged } from 'firebase/auth';
+import Form from './components/Form';
+import Table from './components/Table';
 
-import { auth } from './firebase/firebase';
-
-import Navbar from './components/Navbar';
-
-import BooksPage from './pages/BooksPage';
-import LoginPage from './pages/LoginPage';
-import RegisterPage from './pages/RegisterPage';
+import bookService from './services/book.service';
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [books, setBooks] = useState([]);
 
   useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      setUser(user);
-    })
-  }, []);
+    getBooks();
+  }, [])
+
+  async function getBooks() {
+    try {
+      const books = await bookService.readBooks()
+
+      setBooks(books);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  async function createBook(book) {
+    try {
+      book = await bookService.createBook(book);
+
+      let newBooks = [...books, book];
+      setBooks(newBooks);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  async function deleteBook(book) {
+    try {
+      await bookService.deleteBook(book);
+
+      let newBooks = books.filter((b) => {
+        return b.id !== book.id;
+      })
+
+      setBooks(newBooks);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   return (
-    <BrowserRouter>
-      <Navbar user={user} />
-      <Routes>
-        <Route path="/" element={<BooksPage user={user} />} />
-        <Route path="/login" element={<LoginPage user={user} />} />
-        <Route path="/register" element={<RegisterPage user={user} />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="container mt-5">
+      <div className="card p-5">
+        <h1>Add Book:</h1>
+        <Form createBook={createBook} />
+        <Table books={books} deleteBook={deleteBook} />
+      </div>
+    </div>
   );
 }
 
