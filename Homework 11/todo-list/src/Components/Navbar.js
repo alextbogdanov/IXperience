@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { signOut } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 import { auth } from '../Firebase/Firebase';
 
+import Spinner from './Spinner';
+
 export default function Navbar({ user }) {
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   async function onSignout() {
+    setLoading(true);
     try {
       await signOut(auth);
       navigate('/login');
     } catch(err) {
       console.log(err);
     }
+    setLoading(false);
   }
 
   return (
@@ -26,7 +32,10 @@ export default function Navbar({ user }) {
         </li>
         <li className="nav-item">
           <button className="btn btn-secondary" onClick={onSignout}>
-            Logout
+            {loading ?
+              <Spinner /> :
+              'Logout'
+            }
           </button>
         </li>
         </>

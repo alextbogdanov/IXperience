@@ -4,21 +4,26 @@ import { useNavigate } from 'react-router-dom';
 
 import { auth } from '../Firebase/Firebase';
 
+import Spinner from '../Components/Spinner';
+
 export default function RegisterPage({ user }) {
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
 	async function onRegister(e) {
 		e.preventDefault();
 
+    setLoading(true);
 		try {
 			await createUserWithEmailAndPassword(auth, email, password);
 			navigate('/login');
 		} catch(err) {
 			console.log(err);
 		}
+    setLoading(false);
 	}
 
   return (
@@ -47,7 +52,10 @@ export default function RegisterPage({ user }) {
           </div>
           <div className='d-grid'>
             <button className='btn btn-secondary' type="submit">
-              Register
+              {loading ?
+                <Spinner /> :
+                'Register'
+              }
             </button>
           </div>
         </form>

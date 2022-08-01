@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+import Spinner from '../Components/Spinner';
 import TaskInput from '../Components/TaskInput';
 import TaskTable from '../Components/TaskTable';
 
@@ -8,12 +9,14 @@ import taskService from '../Services/Task.service.js';
 
 export default function TasksPage({ user }) {
 	const [tasks, setTasks] = useState([]);
+	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
 		readTasks();
 	}, []);
 
 	async function readTasks() {
+		setLoading(true);
 		try {
 			const rTasks = await taskService.readTasks();
 
@@ -21,46 +24,34 @@ export default function TasksPage({ user }) {
 		} catch(err) {
 			console.log(err);
 		}
+		setLoading(false);
 	}
 
 	async function createTask(task) {
-		try {
-			task = await taskService.createTask(task);
+		task = await taskService.createTask(task);
 
-			let newTasks = [...tasks, task];
-			setTasks(newTasks);
-		} catch(err) {
-			console.log(err);
-		}
+		let newTasks = [...tasks, task];
+		setTasks(newTasks);
 	}
 
 	async function completeTask(task) {
-		try {
-			task = await taskService.updateTask(task);
+		task = await taskService.updateTask(task);
 
-			let newTasks = tasks.map((t) => {
-				return task.id === t.id ? task : t;
-			})
+		let newTasks = tasks.map((t) => {
+			return task.id === t.id ? task : t;
+		})
 
-			setTasks(newTasks);
-		} catch(err) {
-			console.log(err);
-		}
+		setTasks(newTasks);
 	}
 
 	async function deleteTask(task) {
-		try {
-			await taskService.deleteTask(task);
+		await taskService.deleteTask(task);
 
-			let newTasks = tasks.filter((t) => {
-				return task.id !== t.id;
-			})
+		let newTasks = tasks.filter((t) => {
+			return task.id !== t.id;
+		})
 
-			localStorage.setItem('tasks', JSON.stringify(newTasks));
-			setTasks(newTasks);
-		} catch(err) {
-			console.log(err);
-		}
+		setTasks(newTasks);
 	}
 
 	return (
@@ -71,7 +62,10 @@ export default function TasksPage({ user }) {
 							<hr />
 							<h3 className="mt-4 mb-4 text-center">Our simple task list</h3>
 							<TaskInput createTask={createTask} />
-							<TaskTable tasks={tasks} completeTask={completeTask} deleteTask={deleteTask} />
+							{ loading ?
+								<div className="text-center"><Spinner /></div> :
+								<TaskTable tasks={tasks} completeTask={completeTask} deleteTask={deleteTask} />
+							}
 					</div>
 			</div>
 		</div>
