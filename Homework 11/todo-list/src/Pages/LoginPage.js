@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth } from '../Firebase/Firebase';
 
 import Spinner from '../Components/Spinner';
+import Alert from '../Components/Alert';
 
 export default function LoginPage({ user }) {
 	const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function LoginPage({ user }) {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
 	async function onLogin(e) {
 		e.preventDefault();
@@ -21,7 +23,7 @@ export default function LoginPage({ user }) {
 			await signInWithEmailAndPassword(auth, email, password);
 			navigate('/');
 		} catch(err) {
-			console.log(err);
+			setError(err.message);
 		}
     setLoading(false);
 	}
@@ -59,6 +61,14 @@ export default function LoginPage({ user }) {
             </button>
           </div>
         </form>
+        {
+          error ?
+            <Alert className='mt-4'>
+              {error}
+            </Alert>
+          :
+          <></>
+        }
       </div>
     </div>
   )
