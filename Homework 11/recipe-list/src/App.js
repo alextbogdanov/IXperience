@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './firebase/firebase';
 
+import RequiresAuth from './components/auth/RequiresAuth';
+import RequiresNotAuth from './components/auth/RequiresNotAuth';
 import RecipesPage from './pages/RecipesPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -23,9 +25,21 @@ function App() {
     <BrowserRouter>
       <Navbar user={user} />
       <Routes>
-        <Route path="/" element={<RecipesPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/" element={
+          <RequiresAuth user={user}>
+            <RecipesPage />
+          </RequiresAuth>
+        } />
+        <Route path="/login" element={
+          <RequiresNotAuth user={user}>
+            <LoginPage />
+          </RequiresNotAuth>
+        } />
+        <Route path="/register" element={
+          <RequiresNotAuth user={user}>
+            <RegisterPage />
+          </RequiresNotAuth>
+        } />
       </Routes>
     </BrowserRouter>
   );

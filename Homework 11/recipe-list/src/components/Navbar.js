@@ -16,15 +16,17 @@ export default function Navbar({ user }) {
 
   return (
     <ul className="nav bg-light p-3">
-      <li className="nav-item">
-        <Link to="/" className="nav-link active">Home</Link>
-      </li>
       { user ?
-        <li className="nav-item">
-          <button className="btn btn-secondary" onClick={onLogout}>
-            Logout
-          </button>
-        </li>
+        <>
+          <li className="nav-item">
+            <Link to="/" className="nav-link active">Home</Link>
+          </li>
+          <li className="nav-item">
+            <button className="btn btn-secondary" onClick={onLogout}>
+              Logout
+            </button>
+          </li>
+        </>
         : 
         <>
           <li className="nav-item">
