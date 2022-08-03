@@ -5,11 +5,13 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 export default function RegisterPage() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export default function RegisterPage() {
       await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
       navigate('/login');
     } catch(err) {
-      console.log(err);
+      setErrorMessage(err.message);
     }
     setButtonLoading(false);
   }
@@ -58,6 +60,13 @@ export default function RegisterPage() {
                 'Register'
               }
             </button>
+          </div>
+          <div className="mt-4">
+            {
+              errorMessage ?
+              <Alert message={errorMessage} /> :
+              <></>
+            }
           </div>
         </form>
       </div>

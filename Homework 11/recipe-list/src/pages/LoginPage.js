@@ -5,11 +5,13 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase/firebase';
 
 import Spinner from '../components/Spinner';
+import Alert from '../components/Alert';
 
 export default function LoginPage() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [buttonLoading, setButtonLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
 
@@ -21,7 +23,7 @@ export default function LoginPage() {
       await signInWithEmailAndPassword(auth, emailInput, passwordInput);
       navigate('/');
     } catch(err) {
-      console.log(err);
+      setErrorMessage(err.message);
     }
     setButtonLoading(false);
   }
@@ -58,6 +60,13 @@ export default function LoginPage() {
                 'Log In'
               }
             </button>
+          </div>
+          <div className="mt-4">
+            {
+              errorMessage ?
+              <Alert message={errorMessage} /> :
+              <></>
+            }
           </div>
         </form>
       </div>
