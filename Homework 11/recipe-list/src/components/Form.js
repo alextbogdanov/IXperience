@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import IngredientInput from './IngredientInput';
+
 import Recipe from '../models/Recipe';
+
+import IngredientInput from './IngredientInput';
 import Ingredient from '../models/Ingredient';
+import Spinner from '../components/Spinner';
 
 export default function Form({
     createRecipe
@@ -9,13 +12,21 @@ export default function Form({
     const [nameInput, setNameInput] = useState('');
     const [ingredients, setIngredients] = useState([new Ingredient('', '')]);
     const [instructionsInput, setInstructionsInput] = useState('');
+    const [buttonLoading, setButtonLoading] = useState(false);
     
-    function onFormSubmit(e) {
+    async function onFormSubmit(e) {
         e.preventDefault();
 
         if(nameInput.trim() !== '' && instructionsInput.trim() !== '' && ingredients.length > 0) {
             let newRecipe = new Recipe(null, nameInput, ingredients, instructionsInput);
-            createRecipe(newRecipe);
+
+            setButtonLoading(true);
+            try {
+                await createRecipe(newRecipe);
+            } catch(err) {
+                console.log(err);
+            }
+            setButtonLoading(false);
 
             setNameInput('');
             setIngredients([new Ingredient('', '')]);
@@ -71,7 +82,13 @@ export default function Form({
         <label htmlFor="instructions">Instructions</label>
         </div>
         <div className="d-grid col-6 mx-auto mt-4 mb-2">
-        <button className="btn btn-primary" type="submit">Add Recipe</button>
+        <button className="btn btn-primary" type="submit">
+            {
+                buttonLoading ?
+                <Spinner /> :
+                'Add Recipe'
+            }
+        </button>
         </div>
     </form>
   )

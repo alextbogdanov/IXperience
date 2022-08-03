@@ -1,16 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import Form from "../components/Form";
-import RecipeCard from "../components/RecipeCard";
+
 import recipeService from '../services/recipe.service';
+
+import Form from "../components/Form";
+import Recipes from '../components/Recipes';
+import Spinner from '../components/Spinner';
 
 export default function RecipesPage() {
   const [recipes, setRecipes] = useState([]);
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     readRecipes();
   }, [])
 
   async function readRecipes() {
+    setPageLoading(true);
     try {
       let initRecipes = await recipeService.readRecipes();
 
@@ -18,31 +23,24 @@ export default function RecipesPage() {
     } catch(err) {
       console.log(err);
     }
+    setPageLoading(false);
   }
   
   async function createRecipe(recipe) {
-    try {
-      recipe = await recipeService.addRecipe(recipe);
+    recipe = await recipeService.addRecipe(recipe);
 
-      const newRecipes = [...recipes, recipe];
-      setRecipes(newRecipes);
-    } catch(err) {
-      console.log(err);
-    }
+    const newRecipes = [...recipes, recipe];
+    setRecipes(newRecipes);
   }
 
   async function deleteRecipe(recipe) {
-    try {
-      await recipeService.deleteRecipe(recipe);
+    await recipeService.deleteRecipe(recipe);
 
-      const newRecipes = recipes.filter((r) => {
-        return recipe.id !== r.id;
-      });
+    const newRecipes = recipes.filter((r) => {
+      return recipe.id !== r.id;
+    });
 
-      setRecipes(newRecipes);
-    } catch(err) {
-      console.log(err);
-    }
+    setRecipes(newRecipes);
   }
 
   return (
@@ -52,11 +50,11 @@ export default function RecipesPage() {
         <hr />
         <Form createRecipe={createRecipe} />
         <hr className="mb-5" />
-        <div>
-          {recipes.map((r) => {
-            return <RecipeCard key={r.id} recipe={r} deleteRecipe={deleteRecipe} />
-          })}
-        </div>
+        {
+          pageLoading ?
+          <div className="text-center"><Spinner /></div> :
+          <Recipes recipes={recipes} deleteRecipe={deleteRecipe} />
+        }
       </div>
     </div>
   );

@@ -1,9 +1,24 @@
-import React from 'react';
+import React, { useState } from "react"
+
+import Spinner from "./Spinner"
 
 export default function RecipeCard({
     recipe,
     deleteRecipe
 }) {
+	const [deleteLoading, setDeleteLoading] = useState(false);
+
+	async function onRecipeDelete(recipe) {
+		setDeleteLoading(true);
+		try {
+			await deleteRecipe(recipe);
+		}
+		catch(err) {
+			console.log(err);
+		}
+		setDeleteLoading(false);
+	}
+
   return (
     <div className="card mb-4">
         <div className="card-body">
@@ -16,7 +31,13 @@ export default function RecipeCard({
             })}
         </ul>
         <div className="card-body">
-            <button className="btn btn-danger" onClick={() => deleteRecipe(recipe)}>Delete</button>
+            <button className="btn btn-danger" onClick={() => onRecipeDelete(recipe)}>
+				{
+					deleteLoading ?
+					<Spinner /> :
+					'Delete'
+				}
+			</button>
         </div>
     </div>
   )

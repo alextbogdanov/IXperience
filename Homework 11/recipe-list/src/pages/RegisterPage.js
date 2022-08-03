@@ -1,23 +1,29 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+
 import { auth } from '../firebase/firebase';
+
+import Spinner from '../components/Spinner';
 
 export default function RegisterPage() {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   const navigate = useNavigate();
 
   async function onFormSubmit(e) {
     e.preventDefault();
 
+    setButtonLoading(true);
     try {
-    await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
-    navigate('/login');
+      await createUserWithEmailAndPassword(auth, emailInput, passwordInput);
+      navigate('/login');
     } catch(err) {
       console.log(err);
     }
+    setButtonLoading(false);
   }
 
   return (
@@ -46,7 +52,11 @@ export default function RegisterPage() {
           </div>
           <div className='d-grid'>
             <button className='btn btn-secondary' type="submit">
-              Register
+              {
+                buttonLoading ?
+                <Spinner /> :
+                'Register'
+              }
             </button>
           </div>
         </form>
