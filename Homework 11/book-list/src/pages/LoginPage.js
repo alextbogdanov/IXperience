@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 import { auth } from '../firebase/firebase';
 
+import Spinner from '../components/Spinner';
+
 export default function LoginPage({ user }) {
   const [emailInput, setEmailInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if(user != null) {
-      navigate('/');
-    }
-  });
 
   async function onLogin(event) {
     event.preventDefault();
 
+    setLoading(true);
     try {
       await signInWithEmailAndPassword(auth, emailInput, passwordInput);
       navigate('/');
     } catch(err) {
       console.log(err);
     }
+    setLoading(false);
   }
   
   return (
@@ -52,7 +51,16 @@ export default function LoginPage({ user }) {
             />
           </div>
           <div className='d-grid'>
-            <button className='btn btn-secondary' type="submit">Login</button>
+            <button className='btn btn-secondary' type="submit">
+              {
+                loading ?
+                <Spinner />
+                :
+                <>
+                  Login
+                </>
+              }
+            </button>
           </div>
         </form>
       </div>

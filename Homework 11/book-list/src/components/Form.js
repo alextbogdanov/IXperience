@@ -7,14 +7,21 @@ export default function Form(props) {
   const [titleInput, setTitleInput] = useState('');
   const [authorInput, setAuthorInput] = useState('');
   const [isbnInput, setIsbnInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-
-  function onFormSubmit(event) {
+  async function onFormSubmit(event) {
     event.preventDefault();
 
     if(titleInput.trim() !== '' && authorInput.trim() !== '' && isbnInput.trim() !== '') {
       const newBook = new Book(null, titleInput, authorInput, isbnInput);
-      props.createBook(newBook);
+
+      setLoading(true);
+      try {
+        await props.createBook(newBook);
+      } catch(err) {
+        console.log(err);
+      }
+      setLoading(false);
     }
 
     setTitleInput('');
@@ -27,7 +34,7 @@ export default function Form(props) {
         <FormTextInput name="title" text="Title" value={titleInput} changeEvent={setTitleInput} />
         <FormTextInput name="author" text="Author" value={authorInput} changeEvent={setAuthorInput} />
         <FormTextInput name="isbn" text="ISBN#" value={isbnInput} changeEvent={setIsbnInput} />
-        <SubmitButton />
+        <SubmitButton loading={loading} />
     </form>
   )
 }

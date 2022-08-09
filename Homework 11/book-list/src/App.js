@@ -5,6 +5,9 @@ import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth } from './firebase/firebase';
 
+import RequireAuth from './components/auth/RequireAuth';
+import RequireNoAuth from './components/auth/RequireNoAuth';
+
 import Navbar from './components/Navbar';
 
 import BooksPage from './pages/BooksPage';
@@ -24,9 +27,21 @@ function App() {
     <BrowserRouter>
       <Navbar user={user} />
       <Routes>
-        <Route path="/" element={<BooksPage user={user} />} />
-        <Route path="/login" element={<LoginPage user={user} />} />
-        <Route path="/register" element={<RegisterPage user={user} />} />
+        <Route path="/" element={
+          <RequireAuth user={user} >
+            <BooksPage />
+          </RequireAuth>
+        } />
+        <Route path="/login" element={
+          <RequireNoAuth user={user}>
+            <LoginPage />
+          </RequireNoAuth>
+        } />
+        <Route path="/register" element={
+          <RequireNoAuth user={user}>
+            <RegisterPage />
+          </RequireNoAuth>
+        } />
       </Routes>
     </BrowserRouter>
   );
