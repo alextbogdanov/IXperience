@@ -12,13 +12,13 @@ export default function TasksPage({ user }) {
 	const [loading, setLoading] = useState(false);
 
 	useEffect(() => {
-		readTasks();
+		readTasks(user);
 	}, []);
 
-	async function readTasks() {
+	async function readTasks(user) {
 		setLoading(true);
 		try {
-			const rTasks = await taskService.readTasks();
+			const rTasks = await taskService.readTasks(user);
 
 			setTasks(rTasks);
 		} catch(err) {
@@ -61,7 +61,7 @@ export default function TasksPage({ user }) {
 							<h1 className="m-3 text-center">Task List</h1>
 							<hr />
 							<h3 className="mt-4 mb-4 text-center">Our simple task list</h3>
-							<TaskInput createTask={createTask} />
+							<TaskInput createTask={createTask} user={user} />
 							{ loading ?
 								<div className="text-center"><Spinner /></div> :
 								<TaskTable tasks={tasks} completeTask={completeTask} deleteTask={deleteTask} />

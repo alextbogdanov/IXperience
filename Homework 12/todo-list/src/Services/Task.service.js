@@ -1,4 +1,4 @@
-import { collection, addDoc, doc, updateDoc, getDocs, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, doc, updateDoc, getDocs, deleteDoc, query, where } from "firebase/firestore";
 
 import { db } from "../Firebase/Firebase";
 import Task from "../Models/Task";
@@ -8,14 +8,16 @@ class TaskService {
         this.collection = 'tasks';
     }
 
-    async readTasks() {
-        const querySnapshot = await getDocs(collection(db, this.collection));
+    async readTasks(user) {
+        const collectionReference = collection(db, this.collection);
+        const q = query(collectionReference, where('userId', '==', user.uid));
+
+        const querySnapshot = await getDocs(q);
 
         let tasks = [];
 
         querySnapshot.forEach((doc) => {
-            const data = doc.data();
-            let task = new Task(doc.id, data.name, data.completed);
+            let task = Task.fromFirebase(doc);
 
             tasks.push(task);
         });
@@ -24,10 +26,7 @@ class TaskService {
     }
 
     async createTask(task) {
-        const docRef = await addDoc(collection(db, this.collection), {
-            name: task.name,
-            completed: task.completed
-        });
+        const docRef = await addDoc(collection(db, this.collection), task.toJson());
 
         task.id = docRef.id;
         return task;
@@ -36,9 +35,7 @@ class TaskService {
     async updateTask(task) {
         const docRef = doc(db, this.collection, task.id);
 
-        await updateDoc(docRef, {
-            completed: task.completed
-        });
+        await updateDoc(docRef, task.toJson());
 
         return task;
     }

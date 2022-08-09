@@ -7,10 +7,12 @@ import { auth } from './Firebase/Firebase';
 
 import RequireAuth from './Components/Auth/RequireAuth';
 import RequireNotAuth from './Components/Auth/RequireNotAuth';
+
+import Navbar from './Components/Navbar';
 import TasksPage from './Pages/TasksPage';
 import LoginPage from './Pages/LoginPage';
 import RegisterPage from './Pages/RegisterPage';
-import Navbar from './Components/Navbar';
+import ProfilePage from './Pages/ProfilePage';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -27,7 +29,12 @@ function App() {
       <Routes>
         <Route path="/" element={
           <RequireAuth user={user}>
-            <TasksPage />
+            <TasksPage user={user} />
+          </RequireAuth>
+        } />
+        <Route path="/profile" element={
+          <RequireAuth user={user}>
+            <ProfilePage user={user} />
           </RequireAuth>
         } />
         <Route path="/login" element={

@@ -31,6 +31,9 @@ export default function Navbar({ user }) {
           <Link to="/" className="nav-link active">Home</Link>
         </li>
         <li className="nav-item">
+          <Link to="/profile" className="nav-link">Profile</Link>
+        </li>
+        <li className="nav-item">
           <button className="btn btn-secondary" onClick={onSignout}>
             {loading ?
               <Spinner /> :

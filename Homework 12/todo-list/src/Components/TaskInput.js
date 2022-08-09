@@ -12,7 +12,12 @@ export default function TaskInput(props) {
         event.preventDefault();
 
         if(taskInput.trim() !== '') {
-            let newTask = new Task(null, taskInput, false);
+            let newTask = new Task({
+                id: null,
+                name: taskInput,
+                complete: false,
+                userId: props.user.uid
+            });
 
             setLoading(true);
             try {
